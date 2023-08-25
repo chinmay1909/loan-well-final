@@ -17,7 +17,7 @@ public class Employee {
 	
 	// Primary key of the Employee table
 	@Id   // Primary key /unique
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="employee_id")
 	private Long employee_id;
 
