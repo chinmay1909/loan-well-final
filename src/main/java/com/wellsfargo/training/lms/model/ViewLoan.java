@@ -1,27 +1,36 @@
 package com.wellsfargo.training.lms.model;
 
+//------------------------- IMPORTING NECESSARY LIBRARIES ---------------------------//
+
 import java.sql.Date;
 
+//--------------------- MODEL CLASS FOR EMPLOYEE TO VIEW HIS LOANS -------------------//
+
 public class ViewLoan {
+	
+	// Data members
 	
 	private Long loan_id;
 	private String loan_type;
 	private int duration_in_years;
 	private Date card_issue_date;
-	private Long employee_id;
 	
+	// Empty constructor
 	public ViewLoan()
 	{
 		
 	}
 	
-	public ViewLoan(Long loan_id, String loan_type, int duration_in_years, Date card_issue_date, Long employee_id) {
+	// Parameterized constructor
+	public ViewLoan(Long loan_id, String loan_type, int duration_in_years, Date card_issue_date) {
 		this.loan_id = loan_id;
 		this.loan_type = loan_type;
 		this.duration_in_years = duration_in_years;
 		this.card_issue_date = card_issue_date;
-		this.employee_id = employee_id;
 	}
+	
+	// Getters and setters
+	
 	public Long getLoan_id() {
 		return loan_id;
 	}
@@ -34,15 +43,6 @@ public class ViewLoan {
 	public void setLoan_type(String loan_type) {
 		this.loan_type = loan_type;
 	}
-	
-	public Long getEmployee_id() {
-		return employee_id;
-	}
-
-	public void setEmployee_id(Long employee_id) {
-		this.employee_id = employee_id;
-	}
-
 	public int getDuration_in_years() {
 		return duration_in_years;
 	}
@@ -55,6 +55,6 @@ public class ViewLoan {
 	public void setCard_issue_date(Date card_issue_date) {
 		this.card_issue_date = card_issue_date;
 	}
-	
-	
 }
+
+// -------------------------------- END OF VIEWLOAN CLASS ------------------------------//
