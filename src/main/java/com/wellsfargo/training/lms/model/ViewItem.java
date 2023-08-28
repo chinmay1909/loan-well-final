@@ -10,6 +10,7 @@ public class ViewItem {
 	private String item_make;
 	private String item_category;
 	private int item_valuation;
+	private int issued;
 	
 	// Empty constructor
 	public ViewItem()
@@ -18,16 +19,23 @@ public class ViewItem {
 	}
 
 	// Parameterized constructor
-	public ViewItem(Long issue_id, String item_description, String item_make, String item_category, int item_valuation) {
+	public ViewItem(Long issue_id, String item_description, String item_make, String item_category, int item_valuation, int issued) {
 		this.issue_id = issue_id;
 		this.item_description = item_description;
 		this.item_make = item_make;
 		this.item_category = item_category;
 		this.item_valuation = item_valuation;
+		this.issued;
 	}
 	
 	// Getters and setters
 	
+	public int getIssued(){
+		return issued;
+	}
+	public void setIssued(){
+		this.issued = issued;
+	}
 	public Long getIssue_id() {
 		return issue_id;
 	}

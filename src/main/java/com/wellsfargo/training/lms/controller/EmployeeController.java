@@ -35,6 +35,10 @@ public class EmployeeController {
 	// Service instances
 	@Autowired
 	private EmployeeService eservice;
+	@Autowired
+	private LoanCardService lcservice;
+	@Autowired
+	private ItemCardService icservice;
 	
 	//------- ADMIN RELATED FUNCTIONS -------//
 	
@@ -42,6 +46,72 @@ public class EmployeeController {
 	@GetMapping("/employees")
 	public List<Employee> getAllEmployees() {
 		return eservice.listAllEmployees();  
+	}
+
+	// Controller Function to save a loan card in the table
+	@PostMapping("/loancards")
+	public LoanCard saveLoanCard(LoanCard lc) {
+		return lcservice.saveLoanCrd(lc);
+	}
+	
+	// Function to list all the loan cards in the table
+	@GetMapping("/loancards")
+	public List<LoanCard> listAll() {
+ 		return lcservice.listAll(); 
+ 	}
+	
+	// Function to get a single loan card from its primary key id
+	@GetMapping("/loancards/{id}")
+	public ResponseEntity<LoanCard> getSingleLoanCard(@PathVariable(value="id") long id) throws ResourceNotFoundException {
+		LoanCard lc = lcservice.getSingleLoanCard(id).
+		orElseThrow(() -> new ResourceNotFoundException("LoanCard not found for this id: " + id));
+		return ResponseEntity.ok().body(lc);
+	}
+	
+	// Function to delete a loan card from the table by giving its id
+	@DeleteMapping("/loancards/{id}")
+	public Map<String, Boolean> deleteLoanCard(@PathVariable(value="id") Long id)
+	throws ResourceNotFoundException {
+		lcservice.getSingleLoanCard(id).
+				orElseThrow(() -> new ResourceNotFoundException("LoanCard not found for this id: " + id));
+		lcservice.deleteLoanCard(id);
+				
+		Map<String,Boolean> response = new HashMap<>();
+		response.put("Deleted", Boolean.TRUE);
+		return response;
+	}
+
+	// Function to save an item card
+	@PostMapping("/itemcards")
+	public ItemCard saveItemCard(ItemCard i) {
+		return icservice.saveItemCard(i);
+	}
+	
+	// Function to list all the ItemCards available in the table
+	@GetMapping("/itemcards")
+	public List<ItemCard> listAll() {	
+ 		return icservice.listAll(); 
+ 	}
+
+	// Function to get a single item card from the id of the card
+	@GetMapping("/itemcards/{id}")
+	public ResponseEntity<ItemCard> getSingleItemCard(@PathVariable(value="id") long id) throws ResourceNotFoundException {
+		ItemCard ic = icservice.getSingleItemCard(id).
+		orElseThrow(() -> new ResourceNotFoundException("ItemCard not found for this id: " + id));
+		return ResponseEntity.ok().body(ic);
+	}
+	
+	// Function to remove an item card by giving its id
+	@DeleteMapping("/itemcards/{id}")
+	public Map<String, Boolean> deleteItemCard(@PathVariable(value="id") Long id)
+	throws ResourceNotFoundException {
+		icservice.getSingleItemCard(id).
+				orElseThrow(() -> new ResourceNotFoundException("ItemCard not found for this id: " + id));
+		icservice.deleteItemCard(id);
+				
+		Map<String,Boolean> response = new HashMap<>();
+		response.put("Deleted", Boolean.TRUE);
+		return response;
 	}
 
 	// Controller function to get an employee by its primary key id

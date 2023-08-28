@@ -14,6 +14,8 @@ public class ViewLoan {
 	private String loan_type;
 	private int duration_in_years;
 	private Date card_issue_date;
+	private int issued;
+	private int paidback;
 	
 	// Empty constructor
 	public ViewLoan()
@@ -22,15 +24,30 @@ public class ViewLoan {
 	}
 	
 	// Parameterized constructor
-	public ViewLoan(Long loan_id, String loan_type, int duration_in_years, Date card_issue_date) {
+	public ViewLoan(Long loan_id, String loan_type, int duration_in_years, Date card_issue_date, int issued, int paidback) {
 		this.loan_id = loan_id;
 		this.loan_type = loan_type;
 		this.duration_in_years = duration_in_years;
 		this.card_issue_date = card_issue_date;
+		this.issued = issued;
+		this.paidback = paidback;
 	}
 	
 	// Getters and setters
 	
+	public int getIssued(){
+		return issued;
+	}
+	public int getPaidback(){
+		return paidback;
+	}
+	public void setIssued(int issued)
+	{
+		this.issued = issued;
+	}
+	public void setPaidback(int paidback){
+		this.paidback = paidback;
+	}
 	public Long getLoan_id() {
 		return loan_id;
 	}
