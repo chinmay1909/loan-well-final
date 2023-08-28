@@ -20,10 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.wellsfargo.training.lms.exception.ResourceNotFoundException;
 import com.wellsfargo.training.lms.model.ApplyLoan;
 import com.wellsfargo.training.lms.model.Employee;
+import com.wellsfargo.training.lms.model.ItemCard;
+import com.wellsfargo.training.lms.model.LoanCard;
 import com.wellsfargo.training.lms.model.SanctionLoan;
 import com.wellsfargo.training.lms.model.ViewItem;
 import com.wellsfargo.training.lms.model.ViewLoan;
 import com.wellsfargo.training.lms.service.EmployeeService;
+import com.wellsfargo.training.lms.service.ItemCardService;
+import com.wellsfargo.training.lms.service.LoanCardService;
 
 //------------------------- CONTROLLER LAYER CLASS FOR EMPLOYEE -------------------------//
 
@@ -51,12 +55,12 @@ public class EmployeeController {
 	// Controller Function to save a loan card in the table
 	@PostMapping("/loancards")
 	public LoanCard saveLoanCard(LoanCard lc) {
-		return lcservice.saveLoanCrd(lc);
+		return lcservice.saveLoanCard(lc);
 	}
 	
 	// Function to list all the loan cards in the table
 	@GetMapping("/loancards")
-	public List<LoanCard> listAll() {
+	public List<LoanCard> getAllLoanCards() {
  		return lcservice.listAll(); 
  	}
 	

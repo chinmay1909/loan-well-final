@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.wellsfargo.training.lms.exception.BusinessException;
 import com.wellsfargo.training.lms.model.Employee;
 import com.wellsfargo.training.lms.model.LoanCard;
 import com.wellsfargo.training.lms.model.ViewItem;
@@ -96,7 +98,7 @@ public class EmployeeService {
 	
 	// Function to save an employee in the employee table
 	public Employee saveEmployee(Employee e) {
-		return erepo.save(e);  
+		return erepo.save(e);
 	}
 	
 	// Service method to register a new employee

@@ -25,7 +25,7 @@ public class ViewItem {
 		this.item_make = item_make;
 		this.item_category = item_category;
 		this.item_valuation = item_valuation;
-		this.issued;
+		this.issued = issued;
 	}
 	
 	// Getters and setters
@@ -33,7 +33,7 @@ public class ViewItem {
 	public int getIssued(){
 		return issued;
 	}
-	public void setIssued(){
+	public void setIssued(int issued){
 		this.issued = issued;
 	}
 	public Long getIssue_id() {
