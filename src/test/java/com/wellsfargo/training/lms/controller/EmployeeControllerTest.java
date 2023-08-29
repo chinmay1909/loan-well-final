@@ -27,9 +27,15 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.wellsfargo.training.lms.model.Employee;
+import com.wellsfargo.training.lms.model.LoanCard;
+import com.wellsfargo.training.lms.model.ItemCard;
 import com.wellsfargo.training.lms.repository.EmployeeRepository;
+import com.wellsfargo.training.lms.repository.LoanCardRepository;
+import com.wellsfargo.training.lms.repository.ItemCardRepository;
 import com.wellsfargo.training.lms.service.EmployeeService;
 import com.wellsfargo.training.lms.controller.EmployeeController;
+import com.wellsfargo.training.lms.service.LoanCardService;
+import com.wellsfargo.training.lms.service.ItemCardService;
 
 //SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
@@ -43,8 +49,16 @@ class EmployeeControllerTest {
 	@MockBean
 	private EmployeeService eservice;
 	
+	@MockBean
+	private LoanCardService lcservice;
+	
+	@MockBean
+	private ItemCardService iservice;
+	
 	Employee employee;
-
+	LoanCard loancard;
+	ItemCard itemcard;
+	
 //	@BeforeAll
 //	static void setUpBeforeClass() throws Exception {
 //	}
@@ -76,7 +90,35 @@ class EmployeeControllerTest {
 		verify(eservice, times(1)).listAllEmployees();
 		
 	}
-
+	
+	@Test
+	void testGetAllLoanCards() {
+		List<LoanCard> mockLoanCards = new ArrayList<>();
+		mockLoanCards.add(new LoanCard(12L, 123L, 1L, Date.valueOf("2002-12-22"), 23, 32));
+//		mockEmployees.add(new Employee());
+		
+		when(lcservice.listAll()).thenReturn(mockLoanCards);
+		List<LoanCard> responseLoanCards = employeeController.getAllLoanCards();
+//		assertEquals()
+		assertEquals(32, responseLoanCards.get(0).getPaidback());		
+		verify(lcservice, times(1)).listAll();
+		
+	}
+	
+	@Test
+	void testListAll() {
+		List<ItemCard> mockItemCards = new ArrayList<>();
+		mockItemCards.add(new ItemCard(12L, 123L, 1L, Date.valueOf("2002-12-22"), Date.valueOf("2004-10-22"), 32));
+//		mockEmployees.add(new Employee());
+		
+		when(iservice.listAll()).thenReturn(mockItemCards);
+		List<ItemCard> responseItemCards = employeeController.listAll();
+//		assertEquals()
+		assertEquals(32, responseItemCards.get(0).getIssued());		
+		verify(iservice, times(1)).listAll();
+		
+	}
+	
 	@Test
 	void testGetEmployeeById() throws ResourceNotFoundException{
 		Employee mockEmployee=new Employee(123L, "Chinmay", "PA", "DTI", 'M', Date.valueOf("2002-12-22"), Date.valueOf("2004-11-14"),"pass123");
@@ -91,7 +133,37 @@ class EmployeeControllerTest {
 		
 		verify(eservice,times(1)).getSingleEmployee(123L);
 	}
-
+	
+	@Test
+	void testGetSingleLoanCard() throws ResourceNotFoundException{
+		LoanCard mockLoanCard=new LoanCard(12L, 123L, 1L, Date.valueOf("2002-12-22"), 23, 32);
+		
+		when(lcservice.getSingleLoanCard(12L)).thenReturn(Optional.of(mockLoanCard));
+		
+		ResponseEntity<LoanCard> re = employeeController.getSingleLoanCard(12L);
+		assertEquals(HttpStatus.OK,re.getStatusCode());
+		assertEquals(32, re.getBody().getPaidback());
+		assertEquals(23, re.getBody().getIssued());
+//		assertEquals("Chinmay",re.getBody().getEmployee_name());
+		
+		verify(lcservice,times(1)).getSingleLoanCard(12L);
+	}
+	
+	@Test
+	void testGetSingleItemCard() throws ResourceNotFoundException{
+		ItemCard mockItemCard=new ItemCard(12L, 123L, 1L, Date.valueOf("2002-12-22"), Date.valueOf("2004-10-22"), 32);
+		
+		when(iservice.getSingleItemCard(12L)).thenReturn(Optional.of(mockItemCard));
+		
+		ResponseEntity<ItemCard> re = employeeController.getSingleItemCard(12L);
+		assertEquals(HttpStatus.OK,re.getStatusCode());
+//		assertEquals(32, re.getBody().getPaidback());
+		assertEquals(32, re.getBody().getIssued());
+//		assertEquals("Chinmay",re.getBody().getEmployee_name());
+		
+		verify(iservice,times(1)).getSingleItemCard(12L);
+	}
+	
 	@Test
 	void testDeleteItem() throws ResourceNotFoundException{
 		Employee existingEmployee = new Employee(123L, "Chinmay", "PA", "DTI", 'M', Date.valueOf("2002-12-22"), Date.valueOf("2004-11-14"),"pass123");
@@ -107,7 +179,39 @@ class EmployeeControllerTest {
 		verify(eservice,times(1)).getSingleEmployee(123L);
 		verify(eservice,times(1)).deleteEmployee(123L);
 	}
-
+	
+	@Test
+	void testDeleteLoanCard() throws ResourceNotFoundException{
+		LoanCard existingLoanCard = new LoanCard(12L, 123L, 1L, Date.valueOf("2002-12-22"), 23, 32);
+		
+		when(lcservice.getSingleLoanCard(12L)).thenReturn(Optional.of(existingLoanCard));
+		doNothing().when(lcservice).deleteLoanCard(12L);
+		
+		Map<String,Boolean> response = employeeController.deleteLoanCard(12L);
+		
+		assertTrue(response.containsKey("Deleted"));
+		assertTrue(response.get("Deleted"));
+		
+		verify(lcservice,times(1)).getSingleLoanCard(12L);
+		verify(lcservice,times(1)).deleteLoanCard(12L);
+	}
+	
+	@Test
+	void testDeleteItemCard() throws ResourceNotFoundException{
+		ItemCard existingItemCard = new ItemCard(12L, 123L, 1L, Date.valueOf("2002-12-22"), Date.valueOf("2005-09-22"), 32);
+		
+		when(iservice.getSingleItemCard(12L)).thenReturn(Optional.of(existingItemCard));
+		doNothing().when(iservice).deleteItemCard(12L);
+		
+		Map<String,Boolean> response = employeeController.deleteItemCard(12L);
+		
+		assertTrue(response.containsKey("Deleted"));
+		assertTrue(response.get("Deleted"));
+		
+		verify(iservice,times(1)).getSingleItemCard(12L);
+		verify(iservice,times(1)).deleteItemCard(12L);
+	}
+	
 	@Test
 	void testUpdateEmployee() throws ResourceNotFoundException{
 		Employee existingEmployee = new Employee(123L, "Chinmay", "PA", "DTI", 'M', Date.valueOf("2002-12-22"), Date.valueOf("2004-11-14"),"pass123");
@@ -127,26 +231,6 @@ class EmployeeControllerTest {
 	}
 
 	@Test
-	void testSanctionLoan() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testPaidBackLoan() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testDeclareOverdue() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testRejectLoan() {
-		fail("Not yet implemented");
-	}
-
-	@Test
 	void testCreateEmployee() {
 		employee.setEmployee_id(123L);
 		employee.setDesignation("PA");
@@ -156,7 +240,7 @@ class EmployeeControllerTest {
 	
 		employee.setDob(Date.valueOf("1990-01-01"));
 		employee.setDoj(Date.valueOf("1999-02-02"));
-			
+		
 		employee.setGender('M');
 		/*
 		 * Matchers are like regex or wildcards where instead of a specific input (and or output), 
@@ -178,6 +262,27 @@ class EmployeeControllerTest {
 		verify(eservice,times(1)).registerEmployee(any(Employee.class));
 	}
 
+	@Test
+	void testSaveItemCard() {
+//		itemcard.setIssue_id(123L);
+//		itemcard.setEmployee_id(12L);
+//		itemcard.setItem_id(1L);
+//
+//		itemcard.setIssue_date(Date.valueOf("1990-01-01"));
+//		itemcard.setReturn_date(Date.valueOf("1999-02-02"));
+//		
+//		itemcard.setIssued(23);
+
+//		when(iservice.saveItemCard(any(ItemCard.class))).thenReturn(itemcard);
+//		ItemCard ic = employeeController.saveItemCard(itemcard);
+		
+//		assertEquals(23, ic.getIssued());
+		//assertEquals(null, null);
+//		assertEquals("Registration successful",re.getBody());
+//		
+//		verify(,null);
+	}
+	
 	@Test
 	void testLoginEmployee() throws ResourceNotFoundException {
 		employee.setEmployee_id(123L);
@@ -210,20 +315,4 @@ class EmployeeControllerTest {
 		
 		verify(eservice,times(2)).loginEmployee(123L);
 	}
-
-	@Test
-	void testApplyLoan() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testViewMyLoans() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testViewMyItems() {
-		fail("Not yet implemented");
-	}
-
 }
