@@ -127,6 +127,26 @@ class EmployeeControllerTest {
 	}
 
 	@Test
+	void testSanctionLoan() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testPaidBackLoan() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testDeclareOverdue() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testRejectLoan() {
+		fail("Not yet implemented");
+	}
+
+	@Test
 	void testCreateEmployee() {
 		employee.setEmployee_id(123L);
 		employee.setDesignation("PA");
@@ -136,7 +156,7 @@ class EmployeeControllerTest {
 	
 		employee.setDob(Date.valueOf("1990-01-01"));
 		employee.setDoj(Date.valueOf("1999-02-02"));
-		
+			
 		employee.setGender('M');
 		/*
 		 * Matchers are like regex or wildcards where instead of a specific input (and or output), 
@@ -190,4 +210,20 @@ class EmployeeControllerTest {
 		
 		verify(eservice,times(2)).loginEmployee(123L);
 	}
+
+	@Test
+	void testApplyLoan() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testViewMyLoans() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testViewMyItems() {
+		fail("Not yet implemented");
+	}
+
 }
